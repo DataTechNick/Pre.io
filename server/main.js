@@ -36,18 +36,16 @@ var server = http.createServer(function (req, res) {
 
     }
 
-}).listen(3000, 'localhost');
+}).listen(80, 'localhost');
 
-console.log("localhost:3000");
+console.log("localhost:80");
 
 var io = require('socket.io').listen(server);
 
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
     
-    console.log("ahoj");
-    socket.emit('message', 'Welcome to chat.');
- 
+    console.log(socket.id);
  
     socket.on('message', function (message) {
         console.log(message);
