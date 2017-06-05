@@ -1,0 +1,9 @@
+{
+    "name": "Pre.io",
+    "version": "0.0.1",
+    "description": "io game",
+    "dependencies": {
+        "socket.io": "latest"
+    },
+    "author": "DataTechNick"
+}

@@ -1,0 +1,11 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-size: 14px;
+    font-family: sans-serif;
+}
+#playground{
+    background-color: #ffcc33;
+}
