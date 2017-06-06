@@ -43,7 +43,16 @@ console.log("localhost:80");
 var io = require('socket.io').listen(server);
 
 
-io.on('connection', function (socket) {
+var players;
+var resources;
+var animals;
+var buildings;
+
+
+
+io.on('connect', function (socket) {
+    
+    
     
     console.log(socket.id);
  
