@@ -10,11 +10,15 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="js/script.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/Resource.js"></script>
+        <script src="js/Animal.js"></script>
+        <script src="js/Building.js"></script>
 
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
     </head>
-    <body onload="init();">
+    <body onload="setup();">
 
         <canvas id="playground"></canvas>
 
@@ -23,24 +27,6 @@
 
 
         </div>
-
-
-        <script>
-
-
-
-//                    socket.on('message', function (message) {
-//                        var text = $("#text").html() + "<div class='content'>" + message + "</div>";
-//                        console.log(text);
-//                        $('#text').html(text);
-//                    });
-//        
-//                    $("#send").click(function () {
-//                        var message = $("#message").val();
-//                        socket.emit('message', message);
-//                    });
-
-        </script>
 
 
     </body>
