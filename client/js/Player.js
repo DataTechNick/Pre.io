@@ -1,5 +1,5 @@
-function Player(name, x, y, type, hp, lvl) {
-    this.id = null;
+function Player(id, name, x, y, type, hp, lvl) {
+    this.id = id;
     this.name = name;
     this.x = x;
     this.y = y;

@@ -26,7 +26,7 @@ var server = http.createServer(function (req, res) {
         });
 
     }
-    
+
     if (req.url.indexOf('Player.js') !== -1) {
 
         fs.readFile('../client/js/Player.js', function (err, data) {
@@ -38,7 +38,7 @@ var server = http.createServer(function (req, res) {
         });
 
     }
-    
+
     if (req.url.indexOf('Resource.js') !== -1) {
 
         fs.readFile('../client/js/Resource.js', function (err, data) {
@@ -50,7 +50,7 @@ var server = http.createServer(function (req, res) {
         });
 
     }
-    
+
     if (req.url.indexOf('Animal.js') !== -1) {
 
         fs.readFile('../client/js/Animal.js', function (err, data) {
@@ -62,7 +62,7 @@ var server = http.createServer(function (req, res) {
         });
 
     }
-    
+
     if (req.url.indexOf('Building.js') !== -1) {
 
         fs.readFile('../client/js/Building.js', function (err, data) {
@@ -93,6 +93,7 @@ console.log("localhost:80");
 
 var io = require('socket.io').listen(server);
 
+var socket;
 
 var players = [];
 var resources = [];
@@ -145,19 +146,21 @@ function tick() {
 
 io.on('connect', function (socket) {
 
-    console.log(socket.id);
-    
-    socket.on('newPlayer', function (data) {
-        console.log(data);
-        
-        players.push(data);
+    socket.emit('newPlayer', socket.id);
 
-        io.sockets.emit('message', message);
+    socket.on('newPlayer', function (data) {
+
+        players.push(data);
+        console.log(players);
+        
     });
 
 
     socket.on('disconnect', function () {
-        console.log("User left us.");
+        
+        var index = players.find(function(player){return player.id === socket.id});
+        players.splice(index);
+        
     });
 
 });

@@ -1,5 +1,5 @@
-function Animal(x, y, type, hostile, hp, lvl) {
-    this.id = null;
+function Animal(id, x, y, type, hostile, hp, lvl) {
+    this.id = id;
     this.x = x;
     this.y = y;
     this.type = type;

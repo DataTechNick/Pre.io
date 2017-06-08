@@ -12,19 +12,20 @@ function setup() {
 
     socket = io.connect('localhost:80'); // change IP
 
-    var player = new Player("Já", (Math.random() * 1000), (Math.random() * 1000), "type", 100, 0);
-    
-    players.push(player);
-    
-    socket.emit("newPlayer", player);
+    socket.on("newPlayer", function (data) {
 
+        var player = new Player(data, "Já", (Math.floor(Math.random() * 1000)), Math.floor((Math.random() * 1000)), "type", 100, 0);
+
+        socket.emit("newPlayer", player);
+
+    });
+    
 }
 
 
-
-socket.on("tick", function () {
-    reDraw();
-})
+//socket.on("tick", function () {
+//    reDraw();
+//});
 
 window.onresize = function () {
     resizePlayground();
@@ -38,7 +39,7 @@ function resizePlayground() {
     playground.width = window.innerWidth;
 }
 
-function reDrav(){
-    
+function reDraw() {
+
 }
 
