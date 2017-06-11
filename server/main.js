@@ -138,7 +138,16 @@ function Building(id, x, y, type, hp, lvl) {
 }
 
 
-setInterval(tick, 16);
+
+
+for (var i = 0; i < 100; i++) {
+    var Resource = new Resource(i, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), "dummy", 10);
+}
+
+
+
+
+setInterval(tick, 16); //fps
 function tick() {
     io.sockets.emit('tick', true);
 }
@@ -146,21 +155,33 @@ function tick() {
 
 io.on('connect', function (socket) {
 
+    console.log("New player connected " + socket.id);
+
     socket.emit('newPlayer', socket.id);
 
     socket.on('newPlayer', function (data) {
 
         players.push(data);
-        console.log(players);
-        
+
+        socket.emit("players", players);
+        socket.emit("animals", animals);
+        socket.emit("buildings", buildings);
+        socket.emit("resources", resources);
+
+        socket.broadcast.emit('addPlayer', data);
+
     });
 
 
     socket.on('disconnect', function () {
-        
-        var index = players.find(function(player){return player.id === socket.id});
-        players.splice(index);
-        
+
+        console.log("Player disconnected " + socket.id);
+
+        var index = players.findIndex(x => x.id === socket.id);
+
+        players.splice(index, 1);
+        io.emit('removePlayer', socket.id);
+
     });
 
 });
