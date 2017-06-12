@@ -87,9 +87,9 @@ var server = http.createServer(function (req, res) {
 
     }
 
-}).listen(80, 'localhost');
+}).listen(80, '192.168.1.107');
 
-console.log("localhost:80");
+console.log("192.168.1.107:80");
 
 var io = require('socket.io').listen(server);
 
@@ -100,6 +100,7 @@ var resources = [];
 var animals = [];
 var buildings = [];
 
+var i;
 
 var playgroundSize = 10000;
 
@@ -114,7 +115,7 @@ function Player(id, name, x, y, type, hp, lvl) {
     this.lvl = lvl;
 }
 
-function Resource(id, x, y, type, size){
+function Resource(id, x, y, type, size) {
     this.id = id;
     this.x = x;
     this.y = y;
@@ -143,21 +144,65 @@ function Building(id, x, y, type, hp, lvl) {
 
 
 
+i = 0;
+while (i < 300) {
 
-for (var i = 0; i < 1000; i++) {
-    
-    var res = new Resource(i, Math.floor(Math.random() * playgroundSize), Math.floor(Math.random() * playgroundSize), "dummy", 10);
+    var x = Math.floor(Math.random() * playgroundSize);
+    var y = Math.floor(Math.random() * playgroundSize);
+    var size = Math.floor(Math.random() * 70) + 40;
+
+    var res = new Resource(i, x, y, "Tree", size);
+
+//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+
     resources.push(res);
-    
+
+    i++;
+
+//    }
+
+
+
 }
 
+i = 0;
+while (i < 200) {
 
+    var x = Math.floor(Math.random() * playgroundSize);
+    var y = Math.floor(Math.random() * playgroundSize);
+    var size = Math.floor(Math.random() * 40) + 20;
 
+    var res = new Resource(i, x, y, "Bush", size);
 
-setInterval(tick, 20); //fps
-function tick() {
-    io.sockets.emit('tick', true);
+//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+
+    resources.push(res);
+
+    i++;
+
+//    }
+
 }
+
+i = 0;
+while (i < 600) {
+
+    var x = Math.floor(Math.random() * playgroundSize);
+    var y = Math.floor(Math.random() * playgroundSize);
+    var size = Math.floor(Math.random() * 60) + 30;
+
+    var res = new Resource(i, x, y, "Stone", size);
+
+//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+
+    resources.push(res);
+
+    i++;
+
+//    }
+
+}
+
 
 
 io.on('connect', function (socket) {
@@ -178,14 +223,27 @@ io.on('connect', function (socket) {
         socket.broadcast.emit('addPlayer', data);
 
     });
-    
+
+    socket.on('move', function (data) {
+
+        socket.broadcast.emit('move', data);
+
+        var i = players.findIndex(x => x.id === data.id);
+
+        if (i !== -1) {
+            players[i].x = data.x;
+            players[i].y = data.y;
+        }
+
+    });
+
     socket.on('disconnect', function () {
 
         console.log("Player disconnected " + socket.id);
 
         var index = players.findIndex(x => x.id === socket.id);
         players.splice(index, 1);
-        
+
         io.emit('removePlayer', socket.id);
 
     });

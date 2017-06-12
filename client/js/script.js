@@ -11,6 +11,7 @@ var buildings = [];
 
 
 var playgroundSize = 10000;
+var speed = 10;
 
 
 function setup() {
@@ -20,14 +21,15 @@ function setup() {
     resizePlayground();
     playgroundInit();
 
-    socket = io.connect('localhost:80'); // change IP
+    socket = io.connect('192.168.1.107:80'); // change IP
 
-    socket.on('tick', function () {
-
+    setInterval(tick, 20); //fps
+    function tick() {
         moveMe();
         draw();
+    }
 
-    });
+
 
     socket.on('newPlayer', function (data) {
 
@@ -70,7 +72,18 @@ function setup() {
         players.splice(index, 1);
 
     });
-    
+
+    socket.on('move', function (data) {
+
+        var i = players.findIndex(x => x.id === data.id);
+
+        if (i !== -1) {
+            players[i].x = data.x;
+            players[i].y = data.y;
+        }
+
+    });
+
 }
 
 
@@ -92,16 +105,16 @@ var down = 0;
 document.addEventListener("keydown", function (event) {
     event.preventDefault();
     if (event.keyCode === 37) {
-        right = 10;
+        right = speed;
     }
     if (event.keyCode === 38) {
-        down = 10;
+        down = speed;
     }
     if (event.keyCode === 39) {
-        left = 10;
+        left = speed;
     }
     if (event.keyCode === 40) {
-        up = 10;
+        up = speed;
     }
 });
 
@@ -121,17 +134,33 @@ document.addEventListener("keyup", function (event) {
     }
 });
 
+
+
+
+
 function moveMe() {
+
+    if (me.x <= 0) {
+        left = 0;
+    }
+    if (me.y <= 0) {
+        up = 0;
+    }
+    if (me.x >= playgroundSize) {
+        right = 0;
+    }
+    if (me.y >= playgroundSize) {
+        down = 0;
+    }
+
+    socket.emit("move", {x: me.x, y: me.y, id: me.id});
+
     me.x += right;
     me.y += down;
     me.x -= left;
     me.y -= up;
 
 }
-
-
-
-
 
 function resizePlayground() {
 
@@ -153,8 +182,8 @@ function draw() {
     ctx.clearRect(-(window.innerWidth / 2), -(window.innerHeight / 2), window.innerWidth, window.innerHeight);
 
     drawPlayers();
-    drawDummies();
     drawMe();
+    drawResources();
 
 }
 
@@ -185,22 +214,41 @@ function drawPlayers() {
             ctx.fill();
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
-            ctx.font = "20px Georgia";
+            ctx.font = "20px Arial";
             ctx.fillText(player.name, me.x - player.x, me.y - player.y + 7);
 
         }
     }
 }
 
-function drawDummies() {
+function drawResources() {
 
     for (var i = 0; i < resources.length; i++) {
 
-        var dummy = resources[i];
-        ctx.fillStyle = "brown";
-        ctx.beginPath();
-        ctx.arc(me.x - dummy.x, me.y - dummy.y, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        var resource = resources[i];
+
+        if (resource.type === "Tree") {
+
+            ctx.fillStyle = "green";
+            ctx.beginPath();
+            ctx.arc(me.x - resource.x, me.y - resource.y, resource.size, 0, 2 * Math.PI);
+            ctx.fill();
+
+        } else if (resource.type === "Bush") {
+
+            ctx.fillStyle = "yellow";
+            ctx.beginPath();
+            ctx.arc(me.x - resource.x, me.y - resource.y, resource.size, 0, 2 * Math.PI);
+            ctx.fill();
+
+        } else if (resource.type === "Stone") {
+
+            ctx.fillStyle = "gray";
+            ctx.beginPath();
+            ctx.arc(me.x - resource.x, me.y - resource.y, resource.size, 0, 2 * Math.PI);
+            ctx.fill();
+
+        }
+
     }
 }
-
