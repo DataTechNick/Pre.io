@@ -100,6 +100,10 @@ var resources = [];
 var animals = [];
 var buildings = [];
 
+
+var playgroundSize = 10000;
+
+
 function Player(id, name, x, y, type, hp, lvl) {
     this.id = id;
     this.name = name;
@@ -110,7 +114,7 @@ function Player(id, name, x, y, type, hp, lvl) {
     this.lvl = lvl;
 }
 
-function Resource(id, x, y, type, size) {
+function Resource(id, x, y, type, size){
     this.id = id;
     this.x = x;
     this.y = y;
@@ -140,14 +144,17 @@ function Building(id, x, y, type, hp, lvl) {
 
 
 
-for (var i = 0; i < 100; i++) {
-    var Resource = new Resource(i, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), "dummy", 10);
+for (var i = 0; i < 1000; i++) {
+    
+    var res = new Resource(i, Math.floor(Math.random() * playgroundSize), Math.floor(Math.random() * playgroundSize), "dummy", 10);
+    resources.push(res);
+    
 }
 
 
 
 
-setInterval(tick, 16); //fps
+setInterval(tick, 20); //fps
 function tick() {
     io.sockets.emit('tick', true);
 }
@@ -163,23 +170,22 @@ io.on('connect', function (socket) {
 
         players.push(data);
 
-        socket.emit("players", players);
-        socket.emit("animals", animals);
-        socket.emit("buildings", buildings);
-        socket.emit("resources", resources);
+        socket.emit('players', players);
+        socket.emit('animals', animals);
+        socket.emit('buildings', buildings);
+        socket.emit('resources', resources);
 
         socket.broadcast.emit('addPlayer', data);
 
     });
-
-
+    
     socket.on('disconnect', function () {
 
         console.log("Player disconnected " + socket.id);
 
         var index = players.findIndex(x => x.id === socket.id);
-
         players.splice(index, 1);
+        
         io.emit('removePlayer', socket.id);
 
     });
