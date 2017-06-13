@@ -14,7 +14,43 @@ body{
 
 
 #playground{
+    position: fixed;
     background-color: #339900;
     display: block;
 }
 
+
+
+
+
+.hud{
+    position: relative;
+    background-color: rgba(53, 219, 252, 0.6);
+    margin: 10px;
+    box-shadow: inset #999999 0px 0px 40px;
+}
+#minimap{
+    height: 150px;
+    width: 150px;
+}
+#healthBar{
+    height: 200px;
+    width: 200px;
+
+    visibility: hidden;
+
+}
+#staminaBar{
+    height: 200px;
+    width: 200px;
+
+    visibility: hidden;
+
+} 
+#hotBar{
+    height: 200px;
+    width: 200px;
+
+    visibility: hidden;
+
+}

@@ -1,3 +1,5 @@
+// nodepack
+
 var http = require('http'),
         fs = require('fs');
 
@@ -87,9 +89,9 @@ var server = http.createServer(function (req, res) {
 
     }
 
-}).listen(80, '192.168.1.107');
+}).listen(80, '192.168.10.232');
 
-console.log("192.168.1.107:80");
+console.log("192.168.10.232:80");
 
 var io = require('socket.io').listen(server);
 
@@ -100,9 +102,7 @@ var resources = [];
 var animals = [];
 var buildings = [];
 
-var i;
-
-var playgroundSize = 10000;
+var playgroundSize = 500;
 
 
 function Player(id, name, x, y, type, hp, lvl) {
@@ -144,64 +144,75 @@ function Building(id, x, y, type, hp, lvl) {
 
 
 
-i = 0;
-while (i < 300) {
+console.log("Growing trees");
+
+var i = 0;
+while (i < 1) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
     var size = Math.floor(Math.random() * 70) + 40;
 
-    var res = new Resource(i, x, y, "Tree", size);
+    var res = new Resource(resources.length + 1, x, y, "Tree", size);
 
-//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+    console.log(resources.length);
 
-    resources.push(res);
+    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
 
-    i++;
+        resources.push(res);
 
-//    }
+        i++;
 
-
+    }
 
 }
 
+console.log("Planting bushes");
+
 i = 0;
-while (i < 200) {
+while (i < 0) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
     var size = Math.floor(Math.random() * 40) + 20;
 
-    var res = new Resource(i, x, y, "Bush", size);
+    res = new Resource(resources.length + 1, x, y, "Bush", size);
 
-//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+    console.log(resources.length);
 
-    resources.push(res);
+    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
 
-    i++;
+        resources.push(res);
 
-//    }
+        i++;
+
+    }
 
 }
 
+console.log("Placing stone");
+
 i = 0;
-while (i < 600) {
+while (i < 0) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
     var size = Math.floor(Math.random() * 60) + 30;
 
-    var res = new Resource(i, x, y, "Stone", size);
+    res = new Resource(resources.length + 1, x, y, "Stone", size);
 
-//    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
+    console.log(resources.length);
 
-    resources.push(res);
+    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
 
-    i++;
+        resources.push(res);
 
-//    }
+        i++;
 
+    }
 }
+
+
 
 
 
