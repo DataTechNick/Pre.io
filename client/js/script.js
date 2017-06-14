@@ -11,7 +11,7 @@ var Game = function () {
     var buildings = [];
 
 
-    var playgroundSize = 500;
+    var playgroundSize = 10000;
     var speed = 10;
 
 
@@ -180,7 +180,10 @@ var Game = function () {
 
             if (detectColision(me, resources[i])) {
 
-                countCorrectPosition(me, res, oldX, oldY);
+                countCorrectPosition(me, resources[i], oldX, oldY);
+
+                me.x = oldX;
+                me.y = oldY;
 
             }
 
@@ -193,14 +196,14 @@ var Game = function () {
         return Math.sqrt(Math.pow(res.x - me.x, 2) + Math.pow(res.y - me.y, 2)) <= res.size + 30;
 
     }
-    
-    function countCorrectPosition (me, res, oldX, oldY){
-        
+
+    function countCorrectPosition(me, res, oldX, oldY) {
+
         var sX = me.x - oldX;
         var sY = me.y - oldY;
-        
-        
-        
+
+
+
     }
 
     function resizePlayground() {
@@ -309,11 +312,16 @@ var Game = function () {
 
         mm.fillStyle = "white";
         mm.beginPath();
-        mm.arc(-me.x / playgroundSize * 150, -me.y / playgroundSize * 150, 2, 0, 2 * Math.PI);
-        mm.stroke();
+        mm.arc(-me.x / playgroundSize * 150, -me.y / playgroundSize * 150, 3, 0, 2 * Math.PI);
+        mm.fill();
 
     }
-}
+};
+
+
+var MainMenu = function () {
+
+};
 
 $(function () {
     var game = new Game();

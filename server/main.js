@@ -102,7 +102,7 @@ var resources = [];
 var animals = [];
 var buildings = [];
 
-var playgroundSize = 500;
+var playgroundSize = 10000;
 
 
 function Player(id, name, x, y, type, hp, lvl) {
@@ -147,7 +147,7 @@ function Building(id, x, y, type, hp, lvl) {
 console.log("Growing trees");
 
 var i = 0;
-while (i < 1) {
+while (i < 300) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
@@ -170,7 +170,7 @@ while (i < 1) {
 console.log("Planting bushes");
 
 i = 0;
-while (i < 0) {
+while (i < 200) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
@@ -193,7 +193,7 @@ while (i < 0) {
 console.log("Placing stone");
 
 i = 0;
-while (i < 0) {
+while (i < 600) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);

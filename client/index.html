@@ -22,14 +22,37 @@
 
         <canvas id="playground"></canvas>
 
-
+        
+        
         <canvas class="hud" id="minimap"></canvas>
 
-        <div class="hud" id="healthBar"></div>
-        <div class="hud" id="staminaBar"></div>
+        <div class="hud" id="bars">
+            <div id="healthBar">hp</div>
+            <div id="xpBar">xp</div>
+        </div>
+        
+        <div class="hud" id="resources">
+            <table>
+                <tr><td>Wood</td><td><span id="wood">0</span></td></tr>
+                <tr><td>Stone</td><td><span id="stone">0</span></td></tr>
+                <tr><td>Weed</td><td><span id="weed">0</span></td></tr>
+                <tr><td>Leather</td><td><span id="leather">0</span></td></tr>
+                <tr><td>Food</td><td><span id="food">0</span></td></tr>
+            </table>
+        </div>
 
         <div class="hud" id="hotBar"></div>
+        
+        <div class="hud" id="clan"></div>
 
-
+        
+        
+        <div id="shadow">
+            <div id="mainMenu">
+                <input type="text" id="nickname">
+                <input type="button" value="Play">
+            </div>
+        </div>
+        
     </body>
 </html>

@@ -13,6 +13,35 @@ body{
 
 
 
+#shadow{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(50, 50, 50, 0.7);
+    
+    visibility: hidden;
+    
+}
+#mainMenu{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -250px;
+    margin-top: -150px;
+    height: 300px;
+    width: 500px;
+    background-color: rgba(53, 219, 252, 0.6);
+    box-shadow: inset #999999 0px 0px 40px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+
+
+
 #playground{
     position: fixed;
     background-color: #339900;
@@ -24,33 +53,98 @@ body{
 
 
 .hud{
-    position: relative;
+    position: fixed;
+    height: 100%;
+    width: 100%;
     background-color: rgba(53, 219, 252, 0.6);
     margin: 10px;
     box-shadow: inset #999999 0px 0px 40px;
+    border-radius: 5px;
 }
 #minimap{
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 150px;
     width: 150px;
 }
-#healthBar{
-    height: 200px;
-    width: 200px;
-
-    visibility: hidden;
-
+#bars{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 130px;
+    padding: 10px;
 }
-#staminaBar{
-    height: 200px;
-    width: 200px;
-
-    visibility: hidden;
-
+#healthBar{
+    height: 17px;
+    width: 130px;
+    background-color: white;
+    margin-bottom: 15px;
+    text-align: center;
+}
+#xpBar{
+    height: 17px;
+    width: 130px;
+    background-color: white;
+    text-align: center;
 } 
 #hotBar{
-    height: 200px;
-    width: 200px;
-
-    visibility: hidden;
-
+    position: absolute;
+    left: 50%;
+    margin-left: -65px;
+    bottom: 0;
+    height: 15px;
+    width: 130px;
+    margin-bottom: 10px;
+}
+#resources{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    float: right;
+    width: 130px;
+    height: 140px;
+    color: white;
+    padding: 5px;
+}
+#resources table tr{
+    border: 1px solid white;
+}
+#resources table tr td{
+    padding: 5px;
+}
+#food{
+    text-align: right;
+}
+#leather{
+    text-align: right;
+}
+#weed{
+    text-align: right;
+}
+#wood{
+    text-align: right;
+}
+#stone{
+    text-align: right;
+}
+#clan{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 150px;
+    width: 130px;
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#clan::-webkit-scrollbar
+{
+    width: 6px;
+}
+#clan::-webkit-scrollbar-thumb
+{
+    background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 5px;
 }
