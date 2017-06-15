@@ -10,6 +10,9 @@ var Game = function () {
     var animals = [];
     var buildings = [];
 
+    var meResources = {wood: 0, stone: 0, weed: 0, leather: 0, food: 0};
+
+
 
     var playgroundSize = 10000;
     var speed = 10;
@@ -24,11 +27,11 @@ var Game = function () {
         resizePlayground();
         playgroundInit();
 
-        socket = io.connect('192.168.10.232:80'); // change IP
+        socket = io.connect('192.168.1.107:80'); // change IP
 
         setInterval(tick, 20); //fps
         function tick() {
-            moveMe();
+            updateMe();
             draw();
         }
 
@@ -125,8 +128,15 @@ var Game = function () {
     var up = 0;
     var down = 0;
 
+    var getWood = 0;
+    var getStone = 0;
+    var getWeed = 0;
+    var getLeather = 0;
+    var getFood = 0;
+
     document.addEventListener("keydown", function (event) {
         event.preventDefault();
+
         if (event.keyCode === 37) {
             right = speed;
         }
@@ -139,10 +149,12 @@ var Game = function () {
         if (event.keyCode === 40) {
             up = speed;
         }
+
     });
 
     document.addEventListener("keyup", function (event) {
         event.preventDefault();
+
         if (event.keyCode === 37) {
             right = 0;
         }
@@ -155,13 +167,49 @@ var Game = function () {
         if (event.keyCode === 40) {
             up = 0;
         }
+
+    });
+
+    document.addEventListener("onmousedown", function (event) {
+        event.preventDefault();
+
+//        console.log(event.clientX);
+//        console.log(event.clientY);
+//        console.log(window.innerHeight);
+//        console.log(window.innerWidth);
+
+console.log("ahoj");
+
+        console.log(resources.indexOf(res => Math.sqrt(Math.pow(res.x - me.x, 2) + Math.pow(res.y - me.y, 2)) <= res.size + 30 + 30));
+
+        getWood = 0;
+        getStone = 0;
+        getWeed = 0;
+        getLeather = 0;
+        getFood = 0;
+
+    });
+
+    document.addEventListener("onmouseup", function (event) {
+        event.preventDefault();
+
+        getWood = 0;
+        getStone = 0;
+        getWeed = 0;
+        getLeather = 0;
+        getFood = 0;
+
     });
 
 
 
 
 
-    function moveMe() {
+
+
+    function updateMe() {
+
+        addResources(getWood, getStone, getWeed, getLeather, getFood);
 
         var oldX = me.x;
         var oldY = me.y;
@@ -225,6 +273,26 @@ var Game = function () {
         var sY = me.y - oldY;
 
 
+
+    }
+
+
+
+
+
+    var addResources = function (wood, stone, weed, leather, food) {
+
+        meResources.wood += wood;
+        meResources.stone += stone;
+        meResources.weed += weed;
+        meResources.leather += leather;
+        meResources.food += food;
+
+        $("#wood").text(meResources.wood);
+        $("#stone").text(meResources.stone);
+        $("#weed").text(meResources.weed);
+        $("#leather").text(meResources.leather);
+        $("#food").text(meResources.food);
 
     }
 

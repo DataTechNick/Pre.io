@@ -89,9 +89,9 @@ var server = http.createServer(function (req, res) {
 
     }
 
-}).listen(80, '192.168.10.232');
+}).listen(80, '192.168.1.107');
 
-console.log("192.168.10.232:80");
+console.log("192.16.10.107:80");
 
 var io = require('socket.io').listen(server);
 
@@ -222,16 +222,16 @@ io.on('connect', function (socket) {
 
     socket.emit('newPlayer', socket.id);
 
-    socket.emit('players', players);
-    socket.emit('animals', animals);
-    socket.emit('buildings', buildings);
-    socket.emit('resources', resources);
-
     socket.on('newPlayer', function (data) {
 
         players.push(data);
 
-        io.sockets.emit('addPlayer', data);
+        socket.emit('players', players);
+        socket.emit('animals', animals);
+        socket.emit('buildings', buildings);
+        socket.emit('resources', resources);
+
+        socket.broadcast.emit('addPlayer', data);
 
     });
 
