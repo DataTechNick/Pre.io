@@ -15,7 +15,9 @@ var Game = function () {
     var speed = 10;
 
 
-    this.setup = function () {
+    this.setup = function (name) {
+
+        var name = name;
 
         playground = document.getElementById("playground");
 
@@ -34,8 +36,28 @@ var Game = function () {
 
         socket.on('newPlayer', function (data) {
 
-            me = new Player(data, "Já", (Math.floor(Math.random() * 1000)), Math.floor((Math.random() * 1000)), "type", 100, 0);
+            me = new Player(data, name, Math.floor(Math.random() * playgroundSize), Math.floor(Math.random() * playgroundSize), "type", 100, 0);
+
+            var i = 0;
+            while (i < resources.length) {
+
+                console.log(i);
+
+                if (detectColision(me, resources[i])) {
+
+                    me.x = Math.floor(Math.random() * playgroundSize);
+                    me.y = Math.floor(Math.random() * playgroundSize);
+
+                    i = 0;
+
+                } else {
+                    i++;
+                }
+
+            }
+
             socket.emit('newPlayer', me);
+
         });
 
         socket.on('players', function (data) {
@@ -321,9 +343,32 @@ var Game = function () {
 
 var MainMenu = function () {
 
+    this.setup = function () {
+
+        $("#shadow").css("visibility", "visible");
+
+        $("#play").click(function () {
+
+            var nickname = $("#nickname").val();
+
+            $("#shadow").css("visibility", "hidden");
+
+            var game = new Game();
+            game.setup(nickname);
+
+        });
+
+    };
+
+
 };
 
 $(function () {
+
+//    var mainMenu = new MainMenu();
+//    mainMenu.setup();
+
     var game = new Game();
-    game.setup();
+    game.setup("Já");
+
 });

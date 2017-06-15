@@ -222,16 +222,16 @@ io.on('connect', function (socket) {
 
     socket.emit('newPlayer', socket.id);
 
+    socket.emit('players', players);
+    socket.emit('animals', animals);
+    socket.emit('buildings', buildings);
+    socket.emit('resources', resources);
+
     socket.on('newPlayer', function (data) {
 
         players.push(data);
 
-        socket.emit('players', players);
-        socket.emit('animals', animals);
-        socket.emit('buildings', buildings);
-        socket.emit('resources', resources);
-
-        socket.broadcast.emit('addPlayer', data);
+        io.sockets.emit('addPlayer', data);
 
     });
 
