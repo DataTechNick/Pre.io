@@ -27,7 +27,7 @@ var Game = function () {
         resizePlayground();
         playgroundInit();
 
-        socket = io.connect('192.168.1.107:80'); // change IP
+        socket = io.connect('192.168.10.232:80'); // change IP
 
         setInterval(tick, 20); //fps
         function tick() {
@@ -178,7 +178,7 @@ var Game = function () {
 //        console.log(window.innerHeight);
 //        console.log(window.innerWidth);
 
-console.log("ahoj");
+        console.log("ahoj");
 
         console.log(resources.indexOf(res => Math.sqrt(Math.pow(res.x - me.x, 2) + Math.pow(res.y - me.y, 2)) <= res.size + 30 + 30));
 
@@ -280,7 +280,7 @@ console.log("ahoj");
 
 
 
-    var addResources = function (wood, stone, weed, leather, food) {
+    function addResources(wood, stone, weed, leather, food) {
 
         meResources.wood += wood;
         meResources.stone += stone;
