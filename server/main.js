@@ -89,9 +89,9 @@ var server = http.createServer(function (req, res) {
 
     }
 
-}).listen(80, '192.168.10.232');
+}).listen(80, '192.168.1.125');
 
-console.log("192.168.10.232:80");
+console.log("192.168.1.125:80");
 
 var io = require('socket.io').listen(server);
 

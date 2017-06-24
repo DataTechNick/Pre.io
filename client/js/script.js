@@ -1,9 +1,7 @@
 var Game = function () {
+
     var socket;
     var me;
-
-    var playground;
-    var pg;
 
     var players = [];
     var resources = [];
@@ -12,27 +10,32 @@ var Game = function () {
 
     var meResources = {wood: 0, stone: 0, weed: 0, leather: 0, food: 0};
 
-
-
     var playgroundSize = 10000;
     var speed = 10;
 
+    var hud;
+    var playground;
 
-    this.setup = function (name) {
+    this.Setup = function (name) {
+
+        playground = new Playground();
+        playground.Init(playgroundSize);
+
+        hud = new Hud();
+        hud.Init(playgroundSize);
 
         var name = name;
 
-        playground = document.getElementById("playground");
-
-        resizePlayground();
-        playgroundInit();
-
-        socket = io.connect('192.168.10.232:80'); // change IP
+        socket = io.connect('192.168.1.125:80'); // change IP
 
         setInterval(tick, 20); //fps
+
         function tick() {
+
             updateMe();
-            draw();
+            playground.Draw(me, players, resources, animals, buildings);
+            hud.DrawMiniMap(me);
+
         }
 
 
@@ -112,14 +115,9 @@ var Game = function () {
 
     };
 
-
-
-
-
     window.onresize = function () {
 
-        resizePlayground();
-        playgroundInit();
+        playground.Init();
 
     };
 
@@ -137,16 +135,16 @@ var Game = function () {
     document.addEventListener("keydown", function (event) {
         event.preventDefault();
 
-        if (event.keyCode === 37) {
+        if (event.keyCode === 65) {
             right = speed;
         }
-        if (event.keyCode === 38) {
+        if (event.keyCode === 87) {
             down = speed;
         }
-        if (event.keyCode === 39) {
+        if (event.keyCode === 68) {
             left = speed;
         }
-        if (event.keyCode === 40) {
+        if (event.keyCode === 83) {
             up = speed;
         }
 
@@ -155,16 +153,16 @@ var Game = function () {
     document.addEventListener("keyup", function (event) {
         event.preventDefault();
 
-        if (event.keyCode === 37) {
+        if (event.keyCode === 65) {
             right = 0;
         }
-        if (event.keyCode === 38) {
+        if (event.keyCode === 87) {
             down = 0;
         }
-        if (event.keyCode === 39) {
+        if (event.keyCode === 68) {
             left = 0;
         }
-        if (event.keyCode === 40) {
+        if (event.keyCode === 83) {
             up = 0;
         }
 
@@ -200,12 +198,6 @@ var Game = function () {
         getFood = 0;
 
     });
-
-
-
-
-
-
 
     function updateMe() {
 
@@ -276,10 +268,6 @@ var Game = function () {
 
     }
 
-
-
-
-
     function addResources(wood, stone, weed, leather, food) {
 
         meResources.wood += wood;
@@ -288,41 +276,47 @@ var Game = function () {
         meResources.leather += leather;
         meResources.food += food;
 
-        $("#wood").text(meResources.wood);
-        $("#stone").text(meResources.stone);
-        $("#weed").text(meResources.weed);
-        $("#leather").text(meResources.leather);
-        $("#food").text(meResources.food);
-
     }
 
-    function resizePlayground() {
+
+
+
+};
+
+
+
+var Playground = function () {
+
+    var playground;
+    var pg;
+
+    var playgroundSize;
+
+    this.Init = function (pgSize) {
+
+        playgroundSize = pgSize;
+
+        playground = document.getElementById("playground");
 
         playground.height = window.innerHeight;
         playground.width = window.innerWidth;
 
-    }
-
-    function playgroundInit() {
-
         pg = playground.getContext("2d");
-
         pg.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-    }
+    };
 
-    function draw() {
+    this.Draw = function (me, players, resources, animals, buildings) {
 
         pg.clearRect(-(window.innerWidth / 2), -(window.innerHeight / 2), window.innerWidth, window.innerHeight);
 
-        drawMiniMap();
-        drawPlayers();
-        drawMe();
-        drawResources();
+        drawPlayers(me, players);
+        drawMe(me);
+        drawResources(me, resources);
 
-    }
+    };
 
-    function drawMe() {
+    function drawMe(me) {
 
         pg.fillStyle = "#ffcc00";
         pg.beginPath();
@@ -335,7 +329,7 @@ var Game = function () {
 
     }
 
-    function drawPlayers() {
+    function drawPlayers(me, players) {
 
         for (var i = 0; i < players.length; i++) {
 
@@ -356,7 +350,7 @@ var Game = function () {
         }
     }
 
-    function drawResources() {
+    function drawResources(me, resources) {
 
         for (var i = 0; i < resources.length; i++) {
 
@@ -388,7 +382,19 @@ var Game = function () {
         }
     }
 
-    function drawMiniMap() {
+};
+
+var Hud = function () {
+
+    var playgroundSize;
+
+    this.Init = function (pgSize) {
+
+        playgroundSize = pgSize;
+
+    };
+
+    this.DrawMiniMap = function (me) {
 
         miniMap = document.getElementById("minimap");
 
@@ -405,13 +411,35 @@ var Game = function () {
         mm.arc(-me.x / playgroundSize * 150, -me.y / playgroundSize * 150, 3, 0, 2 * Math.PI);
         mm.fill();
 
-    }
-};
+    };
 
+    this.UpdateResources = function (wood, stone, weed, leather, food) {
+
+        $("#wood").text(wood);
+        $("#stone").text(stone);
+        $("#weed").text(weed);
+        $("#leather").text(leather);
+        $("#food").text(food);
+
+    };
+
+    this.UpdateHealth = function (health) {
+
+    };
+
+    this.UpdateStamina = function (stamina) {
+
+    };
+
+    this.UpdateXp = function (xp) {
+
+    };
+
+};
 
 var MainMenu = function () {
 
-    this.setup = function () {
+    this.Setup = function () {
 
         $("#shadow").css("visibility", "visible");
 
@@ -434,9 +462,9 @@ var MainMenu = function () {
 $(function () {
 
 //    var mainMenu = new MainMenu();
-//    mainMenu.setup();
+//    mainMenu.Setup();
 
     var game = new Game();
-    game.setup("Já");
+    game.Setup("Já");
 
 });
