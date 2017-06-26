@@ -28,41 +28,39 @@ var Game = function () {
 
         socket = io.connect('192.168.1.125:80'); // change IP
 
-        setInterval(tick, 20); //fps
-
-        function tick() {
-
-            updateMe();
-            playground.Draw(me, players, resources, animals, buildings);
-            hud.DrawMiniMap(me);
-
-        }
-
 
 
         socket.on('newPlayer', function (data) {
 
             me = new Player(data, name, Math.floor(Math.random() * playgroundSize), Math.floor(Math.random() * playgroundSize), "type", 100, 0);
 
-            var i = 0;
-            while (i < resources.length) {
+            var collision;
 
-                console.log(i);
+            do {
 
-                if (detectColision(me, resources[i])) {
+                collision = false;
 
-                    me.x = Math.floor(Math.random() * playgroundSize);
-                    me.y = Math.floor(Math.random() * playgroundSize);
+                for (i = 0; i < resources.length; i++) {
 
-                    i = 0;
+                    if (detectColision(me.x, me.y, 30, resources[i].x, resources[i].y, resources[i].size)) {
 
-                } else {
-                    i++;
+                        collision = true;
+
+                        me.x = Math.floor(Math.random() * playgroundSize);
+                        me.y = Math.floor(Math.random() * playgroundSize);
+
+                        break;
+
+                    }
                 }
 
-            }
+
+
+            } while (collision);
 
             socket.emit('newPlayer', me);
+
+            startTick();
 
         });
 
@@ -114,6 +112,21 @@ var Game = function () {
         });
 
     };
+
+    var startTick = function () {
+
+        setInterval(tick, 20); //fps
+        function tick() {
+
+            updateMe();
+            playground.Draw(me, players, resources, animals, buildings);
+            hud.DrawMiniMap(me);
+
+        }
+
+    };
+
+
 
     window.onresize = function () {
 
@@ -180,11 +193,11 @@ var Game = function () {
 
         console.log(resources.indexOf(res => Math.sqrt(Math.pow(res.x - me.x, 2) + Math.pow(res.y - me.y, 2)) <= res.size + 30 + 30));
 
-        getWood = 0;
-        getStone = 0;
-        getWeed = 0;
-        getLeather = 0;
-        getFood = 0;
+        getWood = 1;
+        getStone = 1;
+        getWeed = 1;
+        getLeather = 1;
+        getFood = 1;
 
     });
 
@@ -198,6 +211,10 @@ var Game = function () {
         getFood = 0;
 
     });
+
+
+
+
 
     function updateMe() {
 
@@ -238,24 +255,23 @@ var Game = function () {
         me.x -= left;
         me.y -= up;
 
-        for (var i in resources) {
+        for (i = 0; i < resources.length; i++) {
 
-            if (detectColision(me, resources[i])) {
+            if (detectColision(me.x, me.y, 30, resources[i].x, resources[i].y, resources[i].size)) {
 
-                countCorrectPosition(me, resources[i], oldX, oldY);
+                //console.log(countCorrectPosition(me, resources[i], oldX, oldY));
 
                 me.x = oldX;
                 me.y = oldY;
 
             }
-
         }
 
     }
 
-    function detectColision(me, res) {
+    function detectColision(x1, y1, r1, x2, y2, r2) {
 
-        return Math.sqrt(Math.pow(res.x - me.x, 2) + Math.pow(res.y - me.y, 2)) <= res.size + 30;
+        return Math.floor(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) <= r1 + r2);
 
     }
 
@@ -264,7 +280,7 @@ var Game = function () {
         var sX = me.x - oldX;
         var sY = me.y - oldY;
 
-
+        
 
     }
 
@@ -277,9 +293,6 @@ var Game = function () {
         meResources.food += food;
 
     }
-
-
-
 
 };
 

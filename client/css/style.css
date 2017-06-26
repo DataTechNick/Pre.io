@@ -74,14 +74,14 @@ body{
     width: 130px;
     padding: 10px;
 }
-#healthBar{
+#hpBar{
     height: 17px;
     width: 130px;
     background-color: white;
     margin-bottom: 15px;
     text-align: center;
 }
-#xpBar{
+#spBar{
     height: 17px;
     width: 130px;
     background-color: white;
@@ -96,6 +96,12 @@ body{
     width: 130px;
     margin-bottom: 10px;
 }
+#xpBar{
+    height: 17px;
+    width: 130px;
+    background-color: white;
+    text-align: center;
+} 
 #resources{
     position: absolute;
     right: 0;

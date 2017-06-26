@@ -155,9 +155,7 @@ while (i < 300) {
 
     var res = new Resource(resources.length + 1, x, y, "Tree", size);
 
-    console.log(resources.length);
-
-    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
+    if (!resources.some(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
 
         resources.push(res);
 
@@ -170,7 +168,7 @@ while (i < 300) {
 console.log("Planting bushes");
 
 i = 0;
-while (i < 200) {
+while (i < 300) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
@@ -178,9 +176,7 @@ while (i < 200) {
 
     res = new Resource(resources.length + 1, x, y, "Bush", size);
 
-    console.log(resources.length);
-
-    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
+    if (!resources.some(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
 
         resources.push(res);
 
@@ -193,7 +189,7 @@ while (i < 200) {
 console.log("Placing stone");
 
 i = 0;
-while (i < 600) {
+while (i <400) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
@@ -201,15 +197,14 @@ while (i < 600) {
 
     res = new Resource(resources.length + 1, x, y, "Stone", size);
 
-    console.log(resources.length);
-
-    if (resources.findIndex(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size - 20) === -1) {
+    if (!resources.some(item => Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2)) < item.size + size)) {
 
         resources.push(res);
 
         i++;
 
     }
+
 }
 
 
@@ -220,16 +215,17 @@ io.on('connect', function (socket) {
 
     console.log("New player connected " + socket.id);
 
+
+    socket.emit('players', players);
+    socket.emit('animals', animals);
+    socket.emit('buildings', buildings);
+    socket.emit('resources', resources);
+
     socket.emit('newPlayer', socket.id);
 
     socket.on('newPlayer', function (data) {
 
         players.push(data);
-
-        socket.emit('players', players);
-        socket.emit('animals', animals);
-        socket.emit('buildings', buildings);
-        socket.emit('resources', resources);
 
         socket.broadcast.emit('addPlayer', data);
 
