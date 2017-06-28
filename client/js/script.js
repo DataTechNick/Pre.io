@@ -181,7 +181,7 @@ var Game = function () {
 
     });
 
-    document.addEventListener("onmousedown", function (event) {
+    $("canvas").mousedown(function (event) {
         event.preventDefault();
 
 //        console.log(event.clientX);
@@ -201,14 +201,43 @@ var Game = function () {
 
     });
 
-    document.addEventListener("onmouseup", function (event) {
+    $("canvas").mouseup(function (event) {
         event.preventDefault();
+
+        console.log("ahoj2");
 
         getWood = 0;
         getStone = 0;
         getWeed = 0;
         getLeather = 0;
         getFood = 0;
+
+    });
+
+    window.addEventListener('mousemove', function (e) {
+
+        var dx = e.clientX - me.x;
+        var dy = e.clientY - me.y;
+        var rot = Math.atan2(dy, dx);
+
+        console.log(rot);
+
+//        var angle = Math.atan2(e.clientY - me.y, e.clientX - me.x);
+//
+//        console.log(angle);
+
+//        angle = angle * (180 / Math.PI);
+//
+//        console.log(angle);
+//
+//        if (angle < 0)
+//        {
+//            angle = 360 - (-angle);
+//        }
+
+        me.rotation = rot;
+
+//        console.log(me.rotation);
 
     });
 
@@ -280,7 +309,7 @@ var Game = function () {
         var sX = me.x - oldX;
         var sY = me.y - oldY;
 
-        
+
 
     }
 
@@ -331,6 +360,8 @@ var Playground = function () {
 
     function drawMe(me) {
 
+        pg.rotate(me.rot);
+
         pg.fillStyle = "#ffcc00";
         pg.beginPath();
         pg.arc(0, 0, 30, 0, 2 * Math.PI);
@@ -339,6 +370,8 @@ var Playground = function () {
         pg.textAlign = "center";
         pg.font = "20px Arial";
         pg.fillText(me.name, 0, 7);
+
+        pg.rotate(-me.rot);
 
     }
 

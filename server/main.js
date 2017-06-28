@@ -113,6 +113,7 @@ function Player(id, name, x, y, type, hp, lvl) {
     this.type = type;
     this.hp = hp;
     this.lvl = lvl;
+    this.rot = 0;
 }
 
 function Resource(id, x, y, type, size) {
