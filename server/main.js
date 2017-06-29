@@ -190,7 +190,7 @@ while (i < 300) {
 console.log("Placing stone");
 
 i = 0;
-while (i <400) {
+while (i < 400) {
 
     var x = Math.floor(Math.random() * playgroundSize);
     var y = Math.floor(Math.random() * playgroundSize);
@@ -244,6 +244,18 @@ io.on('connect', function (socket) {
         }
 
     });
+    socket.on('rotate', function (data) {
+
+        socket.broadcast.emit('rotate', data);
+
+        var i = players.findIndex(x => x.id === data.id);
+
+        if (i !== -1) {
+            players[i].rot = data.rot;
+        }
+
+    });
+
 
     socket.on('disconnect', function () {
 

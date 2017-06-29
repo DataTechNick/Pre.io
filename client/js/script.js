@@ -111,6 +111,16 @@ var Game = function () {
 
         });
 
+        socket.on('rotate', function (data) {
+
+            var i = players.findIndex(x => x.id === data.id);
+
+            if (i !== -1) {
+                players[i].rot = data.rot;
+            }
+
+        });
+
     };
 
     var startTick = function () {
@@ -214,32 +224,18 @@ var Game = function () {
 
     });
 
-    window.addEventListener('mousemove', function (e) {
+    document.onmousemove = function (e) {
 
-        var dx = e.clientX - me.x;
-        var dy = e.clientY - me.y;
+        var dx = e.pageX - $(window).innerWidth() / 2;
+        var dy = e.pageY - $(window).innerHeight() / 2;
+
         var rot = Math.atan2(dy, dx);
 
-        console.log(rot);
+        socket.emit("rotate", {rot: rot, id: me.id});
 
-//        var angle = Math.atan2(e.clientY - me.y, e.clientX - me.x);
-//
-//        console.log(angle);
+        me.rot = rot + Math.PI / 2;
 
-//        angle = angle * (180 / Math.PI);
-//
-//        console.log(angle);
-//
-//        if (angle < 0)
-//        {
-//            angle = 360 - (-angle);
-//        }
-
-        me.rotation = rot;
-
-//        console.log(me.rotation);
-
-    });
+    };
 
 
 
@@ -383,6 +379,9 @@ var Playground = function () {
 
             if (player.id !== me.id) {
 
+                pg.translate(window.innerWidth / 2 - player.x, window.innerHeight / 2 - player.y);
+                pg.rotate(player.rot);
+
                 pg.fillStyle = "#ffcc00";
                 pg.beginPath();
                 pg.arc(me.x - player.x, me.y - player.y, 30, 0, 2 * Math.PI);
@@ -391,6 +390,8 @@ var Playground = function () {
                 pg.textAlign = "center";
                 pg.font = "20px Arial";
                 pg.fillText(player.name, me.x - player.x, me.y - player.y + 7);
+
+                pg.rotate(-player.rot);
 
             }
         }
@@ -496,7 +497,7 @@ var MainMenu = function () {
             $("#shadow").css("visibility", "hidden");
 
             var game = new Game();
-            game.setup(nickname);
+            game.Setup(nickname);
 
         });
 
